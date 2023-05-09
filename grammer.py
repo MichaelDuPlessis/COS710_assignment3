@@ -2,14 +2,15 @@ from array import array
 from typing import Callable, Dict, List
 import random as rand
 
-GRAMMER_LEN = 3
+# defining genome
+Genome = array[int]
 
 # these functins reprsent the terminal and none terminal nodes of the grammer and are used to perform calculations
 # genomes is the genome and pos is the position in the genome
 
 # weird python hack I am doing because this sad programming language doesn't hoist
 class Run(object):
-    def __call__(self, genome: array[int], data: Dict[str, float]) -> float:
+    def __call__(self, genome: Genome, data: Dict[str, float]) -> float:
         self.pos = 0
         self.genome = genome
         self.data = data
@@ -20,7 +21,9 @@ class Run(object):
         return rand.choice([-2, -1, 2]) 
    
     def parameter(self) -> float:
-        return self.data[rand.choice(Run.PARAMS)]
+        const = Run.CONSTANTS[self.genome[self.pos % len(Run.CONSTANTS)]]
+        self.pos = (self.pos + 1) % len(self.genome)
+        return const
     
     # non terminals
     def add(self) -> float:
@@ -39,7 +42,7 @@ class Run(object):
         return self.expr() * self.expr()
     
     def expr(self) -> float:
-        return self.production(Run.EXPR)(self)
+        return self.production(Run.PRODUCTIONS)(self)
 
     # helper methods
     # used to choose the production rule
@@ -48,7 +51,8 @@ class Run(object):
         self.pos = (self.pos + 1) % len(self.genome)
         return production
 
-    EXPR = [
+    # static members
+    PRODUCTIONS = [
         add,
         sub,
         div,
@@ -56,10 +60,11 @@ class Run(object):
         constant,
         parameter,
     ]
-
-    TERMINAL = [
-        constant,
-        parameter,
+    
+    CONSTANTS = [
+        -2,
+        -1,
+        2
     ]
 
     PARAMS = [
