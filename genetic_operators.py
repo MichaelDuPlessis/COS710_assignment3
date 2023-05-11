@@ -32,4 +32,4 @@ def destructive_crossover(genome1: Genome, genome2: Genome, max_len: int) -> Tup
             genome2[:point2],
             genome1[point1:]
         ]), min(point2 + len(genome1) - point1, max_len)))
-    
+    )    

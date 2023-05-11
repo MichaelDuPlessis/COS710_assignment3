@@ -9,7 +9,7 @@ Genome = array[int]
 # genomes is the genome and pos is the position in the genome
 
 # weird python hack I am doing because this sad programming language doesn't hoist
-class Run(object):
+class Mapper(object):
     def __call__(self, genome: Genome, data: Dict[str, float]) -> float:
         self.pos = 0
         self.genome = genome
@@ -18,12 +18,14 @@ class Run(object):
         
     # terminals
     def constant(self) -> float:
-        return rand.choice([-2, -1, 2]) 
-   
-    def parameter(self) -> float:
-        const = Run.CONSTANTS[self.genome[self.pos % len(Run.CONSTANTS)]]
+        const = Mapper.CONSTANTS[self.genome[self.pos % len(Mapper.CONSTANTS)]]
         self.pos = (self.pos + 1) % len(self.genome)
         return const
+   
+    def parameter(self) -> float:
+        param = Mapper.PARAMS[self.genome[self.pos % len(Mapper.PARAMS)]]
+        self.pos = (self.pos + 1) % len(self.genome)
+        return self.data[param]
     
     # non terminals
     def add(self) -> float:
@@ -42,11 +44,11 @@ class Run(object):
         return self.expr() * self.expr()
     
     def expr(self) -> float:
-        return self.production(Run.PRODUCTIONS)(self)
+        return self.production(Mapper.PRODUCTIONS)(self)
 
     # helper methods
     # used to choose the production rule
-    def production(self, productions: List[Callable[['Run'], float]]) -> Callable[['Run'], float]:
+    def production(self, productions: List[Callable[['Mapper'], float]]) -> Callable[['Mapper'], float]:
         production = productions[self.genome[self.pos % len(productions)]]
         self.pos = (self.pos + 1) % len(self.genome)
         return production

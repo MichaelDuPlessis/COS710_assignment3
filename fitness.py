@@ -1,11 +1,15 @@
 from typing import Iterable, List, Tuple
-from grammer import Run, Genome
+from grammer import Mapper, Genome
 import random as rand
 
 # calculate the fitness for a genome
 def raw_fitness(genome: Genome, data: Iterable) -> float:
-    run = Run()
-    return sum([abs(run(genome, d) - d['Duration']) for d in data])
+    mapper = Mapper()
+    return sum([abs(mapper(genome, d) - d['Duration']) for d in data])
+
+# calculate the entire populaitons fitness
+def population_raw_fitness(population: List[Genome], data: Iterable) -> List[float]:
+    return [raw_fitness(p, data) for p in population]
 
 # tournament selection
 def tournament(population: List[Genome], data: Iterable, size: int) -> Genome:

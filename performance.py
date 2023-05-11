@@ -2,7 +2,7 @@
 
 import numpy as np
 from typing import List, Dict, Tuple
-from grammer import Genome, Run
+from grammer import Genome, Mapper
 
 def rmse(predictions, targets) -> float:
     mse = np.mean((predictions - targets)**2)
@@ -31,8 +31,8 @@ def mean_absolute_error(predictions, targets) -> float:
 # runs all the performance measures for a given tree and data set
 # frequires the tree/program and data set
 def run_all_measures(genome: Genome, data: List[Dict[str, float]]) -> Tuple[float, float, float, float]:
-    run = Run()
-    prediction_target = [(run(genome, d), float(d['Duration'])) for d in data]
+    mapper = Mapper()
+    prediction_target = [(mapper(genome, d), float(d['Duration'])) for d in data]
     predictions, targets = zip(*prediction_target)
     predictions = np.array(predictions)
     targets = np.array(targets)
