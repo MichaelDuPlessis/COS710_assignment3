@@ -5,7 +5,7 @@ import random as rand
 # calculate the fitness for a genome
 def raw_fitness(genome: Genome, data: Iterable) -> float:
     mapper = Mapper()
-    return sum([abs(mapper(genome, d) - d['Duration']) for d in data])
+    return sum([abs(mapper(genome, d) - float(d['Duration'])) for d in data])
 
 # calculate the entire populaitons fitness
 def population_raw_fitness(population: List[Genome], data: Iterable) -> List[float]:

@@ -1,4 +1,7 @@
 from typing import Dict, List, Tuple
+from grammer import Mapper
+import random as rand
+from data import read_csv
 from population_generation import initial, generate_next_population
 from fitness import population_raw_fitness
 from performance import run_all_measures
@@ -24,13 +27,13 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, weights: Tuple
 
         population = initial(pop_size, max_len)
         fitness = population_raw_fitness(population, training_data)
-        fp = zip(fitness, population)
+        fp = list(zip(fitness, population))
         best = min(fp, key=lambda x: x[0])
 
         for g in range(generations):
             population = generate_next_population(fp, max_len, weights)
             fitness = population_raw_fitness(population, training_data)
-            fp = zip(fitness, population)
+            fp = list(zip(fitness, population))
             best = min(fp, key=lambda x: x[0])
 
             print(f"Generation {g} - best: {best[0]}")
@@ -58,4 +61,16 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, weights: Tuple
         }
 
 if __name__ == "__main__":
-    pass
+    rand.seed(0)
+
+    data = read_csv('./data/For_modeling.csv', 100_000)
+    # print(data)
+    # print()
+
+    pop = initial(100, 5)
+    print(pop)
+    print()
+
+    fitness = population_raw_fitness(pop, data)
+    print(fitness)
+    print()
