@@ -30,7 +30,7 @@ def mean_absolute_error(predictions, targets) -> float:
 
 # runs all the performance measures for a given tree and data set
 # frequires the tree/program and data set
-def run_all_measures(genome: Genome, data: List[Dict[str, float]]) -> Tuple[float, float, float, float]:
+def run_all_measures(genome: Genome, data: List[Dict[str, str]]) -> Tuple[float, float, float, float]:
     mapper = Mapper()
     prediction_target = [(mapper(genome, d), float(d['Duration'])) for d in data]
     predictions, targets = zip(*prediction_target)

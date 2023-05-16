@@ -16,7 +16,7 @@ def mutate_chormosome(genome: Genome) -> Genome:
 # this is the mutation operator it randomly selects a chromosome and changes it and the following chromosomea 
 def mutate_chormosomes(genome: Genome, max_len: int) -> Genome:
     chromosome = randrange(len(genome))
-    genome = array('B', [genome[i] if i < chromosome else randrange(256) for i in range(0, randint(chromosome + 1, max_len))])
+    genome = array('B', [genome[i] if i <= chromosome else randrange(256) for i in range(0, randint(chromosome + 1, max_len))])
     return genome
 
 def destructive_crossover(genome1: Genome, genome2: Genome, max_len: int) -> Tuple[Genome, Genome]:

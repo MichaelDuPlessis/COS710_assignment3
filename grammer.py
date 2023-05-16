@@ -19,7 +19,7 @@ class Mapper(object):
         
     # terminals
     def constant(self) -> float:
-        if len(self.genome) // self.pos >= 5:
+        if self.pos // len(self.genome)>= 5:
             return 999
         const = Mapper.CONSTANTS[self.genome[self.position()] % len(Mapper.CONSTANTS)]
         self.pos += 1
