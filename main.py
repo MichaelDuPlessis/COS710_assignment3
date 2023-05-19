@@ -9,6 +9,7 @@ import os
 import json
 import argparse
 import sys
+import time
 
 # this function is used to run the algorithm
 def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_size: int, weights: Tuple[float, float, float],
@@ -33,6 +34,7 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
         print(f'The seed for the run is {seed}')
         rand.seed(seed)
 
+        start = time.time()
         population = initial(pop_size, max_len)
         fitness = population_raw_fitness(population, training_data)
         fp = list(zip(fitness, population))
@@ -52,7 +54,7 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
         performance_testing = run_all_measures(best[1], testing_data)
 
         session[str(r)] = {
-            "genome": best[1],
+            "genome": list(best[1]),
             "seed": seed,
             "raw_fitness": best[0],
             "performance": {
@@ -68,9 +70,9 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
                     "medae": performance_testing[2],
                     "mae": performance_testing[3],
                 },  
-            }
+            },
+            "time": time.time() - start,
         }
-
 
     print(session)
     if save:
