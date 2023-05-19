@@ -1,5 +1,4 @@
 from typing import Dict, List, Tuple
-from grammer import Mapper
 import random as rand
 from data import read_csv
 from population_generation import initial, generate_next_population
@@ -9,6 +8,7 @@ from datetime import datetime
 import os
 import json
 import argparse
+import sys
 
 # this function is used to run the algorithm
 def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_size: int, weights: Tuple[float, float, float],
@@ -29,6 +29,9 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
 
     for r in range(runs):
         print(f"Starting run {r}")
+        seed = rand.randrange(sys.maxsize)
+        print(f'The seed for the run is {seed}')
+        rand.seed(seed)
 
         population = initial(pop_size, max_len)
         fitness = population_raw_fitness(population, training_data)
@@ -49,6 +52,7 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
 
         session[str(r)] = {
             "genome": best[1],
+            "seed": seed,
             "raw_fitness": best[0],
             "performance": {
                 "training": {
