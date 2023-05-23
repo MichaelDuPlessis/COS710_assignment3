@@ -1,7 +1,7 @@
-data/
-venv/
-.git/
+data
+venv
+.git
 .gitignore
-__pycache__/
+__pycache__
 Dockerfile
 
