@@ -33,3 +33,15 @@ def destructive_crossover(genome1: Genome, genome2: Genome, max_len: int) -> Tup
             genome1[point1:]
         ]), min(point2 + len(genome1) - point1, max_len)))
     )    
+
+# two point crossover
+def two_point_crossover(genome1: Genome, genome2: Genome, _: int) -> Tuple[Genome, Genome]:
+    genome1, genome2 = (genome2, genome1) if len(genome2) < len(genome1) else (genome1, genome2)
+
+    point1 = randrange(len(genome1) // 2) 
+    point2 = randrange(len(genome1) // 2) + len(genome1) // 2
+
+    return (
+        array('B', genome1[:point1] + genome2[point1:point2] + genome1[point2:]),
+        array('B', genome2[:point1] + genome1[point1:point2] + genome2[point2:])
+    )

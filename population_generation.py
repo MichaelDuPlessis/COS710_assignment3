@@ -6,7 +6,7 @@ import math
 from typing import Callable, Iterable, List, Tuple
 import random as rand
 from grammer import Genome
-from genetic_operator import destructive_crossover, mutate_chormosomes
+from genetic_operator import destructive_crossover, mutate_chormosomes, two_point_crossover
 from fitness import tournament_precomputed
 
 # create an individual
@@ -21,7 +21,7 @@ def initial(size: int, max_len: int) -> List[Genome]:
 
 # generate a new population
 def generate_next_population(population: List[Tuple[float, Genome]], max_len: int, tournament_size: int, weights: Tuple[float, float, float],
-                             crossover: Callable[[Genome, Genome, int], Tuple[Genome, Genome]]=destructive_crossover,
+                             crossover: Callable[[Genome, Genome, int], Tuple[Genome, Genome]]=two_point_crossover,
                              mutation: Callable[[Genome, int], Genome]=mutate_chormosomes) -> List[Genome]:
     pop_len = len(population)
     # crossover
