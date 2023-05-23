@@ -1,6 +1,6 @@
 from array import array
 from typing import Callable, Dict, List
-import random as rand
+import math
 
 # defining genome
 Genome = array
@@ -48,6 +48,21 @@ class Mapper(object):
     
     def mul(self) -> float:
         return self.expr() * self.expr()
+
+    def log(self) -> float:
+        return math.log(self.expr())
+
+    def sin(self) -> float:
+        return math.sin(self.expr())
+
+    def cos(self) -> float:
+        return math.cos(self.expr())
+
+    def sqrt(self) -> float:
+        try:
+            return math.sqrt(self.expr())
+        except:
+            return 0
     
     def expr(self) -> float:
         # checking if too many wraps occurred
@@ -72,6 +87,9 @@ class Mapper(object):
         sub,
         div,
         mul,
+        log,
+        sin,
+        cos,
         constant,
         parameter,
     ]
