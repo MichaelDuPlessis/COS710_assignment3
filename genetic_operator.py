@@ -8,15 +8,15 @@ from itertools import chain, islice
 from typing import Tuple
 
 # this is the mutation operator it randomly selects a chromosome and change the number in it 
-def mutate_chormosome(genome: Genome) -> Genome:
+def mutate_chormosome(genome: Genome, _min_len: int, _max_len: int) -> Genome:
     genome = deepcopy(genome)
     genome[randrange(len(genome))] = randrange(256)
     return genome
 
 # this is the mutation operator it randomly selects a chromosome and changes it and the following chromosomea 
-def mutate_chormosomes(genome: Genome, max_len: int) -> Genome:
-    chromosome = randrange(len(genome))
-    genome = array('B', [genome[i] if i <= chromosome else randrange(256) for i in range(0, randint(chromosome + 1, max_len))])
+def mutate_chormosomes(genome: Genome, min_len: int, max_len: int) -> Genome:
+    chromosome = randint(min_len, len(genome) - 1)
+    genome = array('B', [genome[i] if i <= chromosome else randrange(256) for i in range(min_len, randint(chromosome + 1, max_len))])
     return genome
 
 def destructive_crossover(genome1: Genome, genome2: Genome, max_len: int) -> Tuple[Genome, Genome]:

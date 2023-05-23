@@ -39,16 +39,17 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
         fitness = population_raw_fitness(population, training_data)
         fp = list(zip(fitness, population))
         best = min(fp, key=lambda x: x[0])
+        print(best[1])
         print(f"Generation 0 - best: {best[0]}")
-#
+
         for g in range(generations - 1):
-            population = generate_next_population(fp, max_len, tournament_size, weights)
+            population = generate_next_population(fp, 2, max_len, tournament_size, weights)
             fitness = population_raw_fitness(population, training_data)
             fp = list(zip(fitness, population))
             best = min(fp, key=lambda x: x[0])
 
-            if (g + 1) % 10 == 0:
-                print(f"Generation {g + 1} - best: {best[0]}")
+            # if (g + 1) % 10 == 0:
+            print(f"Generation {g + 1} - best: {best[0]}")
 
         performance_training = run_all_measures(best[1], training_data)
         performance_testing = run_all_measures(best[1], testing_data)
