@@ -15,11 +15,15 @@ class Mapper(object):
         self.genome = genome
         self.data = data
         self.chromosomes = 0
-        return self.expr()
+
+        # ensuring first choice is a non terminal
+        production = self.PRODUCTIONS[:-2][self.genome[self.position()] % len(self.PRODUCTIONS[:-2])]
+        self.pos += 1
+        return production(self)
         
     # terminals
     def constant(self) -> float:
-        if self.pos // len(self.genome)>= 5:
+        if self.pos // len(self.genome)>= self.MAX_WRAPS:
             return 999
         const = Mapper.CONSTANTS[self.genome[self.position()] % len(Mapper.CONSTANTS)]
         self.pos += 1
@@ -27,7 +31,7 @@ class Mapper(object):
    
     def parameter(self) -> float:
         # checking if too many wraps occured
-        if self.pos // len(self.genome) >= 5:
+        if self.pos // len(self.genome) >= self.MAX_WRAPS:
             return 999
         param = Mapper.PARAMS[self.genome[self.position()] % len(Mapper.PARAMS)]
         self.pos += 1
@@ -50,7 +54,10 @@ class Mapper(object):
         return self.expr() * self.expr()
 
     def log(self) -> float:
-        return math.log(self.expr())
+        try:
+            return math.log(self.expr())
+        except:
+            return 0
 
     def sin(self) -> float:
         return math.sin(self.expr())
@@ -66,7 +73,7 @@ class Mapper(object):
     
     def expr(self) -> float:
         # checking if too many wraps occurred
-        if self.pos // len(self.genome) >= 5:
+        if self.pos // len(self.genome) >= self.MAX_WRAPS:
             return 999
         return self.production(Mapper.PRODUCTIONS)(self)
 
@@ -82,6 +89,8 @@ class Mapper(object):
         return self.pos % len(self.genome)
 
     # static members
+    MAX_WRAPS = 10
+
     PRODUCTIONS = [
         add,
         sub,
@@ -126,3 +135,4 @@ class Mapper(object):
         'GroundTemp',
         'Dust'
     ]
+

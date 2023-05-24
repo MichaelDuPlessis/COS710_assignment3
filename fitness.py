@@ -13,10 +13,10 @@ def population_raw_fitness(population: List[Genome], data: Iterable) -> List[flo
 
 # tournament selection
 def tournament(population: List[Genome], data: Iterable, size: int) -> Genome:
-    participants = rand.choices(population, k=size)
+    participants = rand.sample(population, size)
     return min(participants, key=lambda p: raw_fitness(p, data))
 
 # tournament selection if the fitness is already calculated
 def tournament_precomputed(population: List[Tuple[float, Genome]], size: int) -> Genome:
-    participants = rand.choices(population, k=size)
+    participants = rand.sample(population, size)
     return min(participants, key=lambda t: t[0])[1]

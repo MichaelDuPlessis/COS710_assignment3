@@ -1,6 +1,7 @@
 from typing import Dict, List, Tuple
 import random as rand
 from data import read_csv
+from genetic_operator import two_point_crossover
 from population_generation import initial, generate_next_population
 from fitness import population_raw_fitness
 from performance import run_all_measures
@@ -10,6 +11,8 @@ import json
 import argparse
 import sys
 import time
+
+from array import array
 
 # this function is used to run the algorithm
 def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_size: int, weights: Tuple[float, float, float],
@@ -39,7 +42,6 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
         fitness = population_raw_fitness(population, training_data)
         fp = list(zip(fitness, population))
         best = min(fp, key=lambda x: x[0])
-        print(best[1])
         print(f"Generation 0 - best: {best[0]}")
 
         for g in range(generations - 1):
