@@ -77,6 +77,26 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
             "time": time.time() - start,
         }
 
+    averages = {
+        "performance": {
+            "training": {
+                "rmse": sum([session[str(r)]["performance"]["training"]["rmse"] for r in range(runs)]),
+                "rsquared": sum([session[str(r)]["performance"]["training"]["rsquared"] for r in range(runs)]),
+                "medae": sum([session[str(r)]["performance"]["training"]["medae"] for r in range(runs)]),
+                "mae": sum([session[str(r)]["performance"]["training"]["mae"] for r in range(runs)]),
+            },
+            "testing": {
+                "rmse": sum([session[str(r)]["performance"]["testing"]["rmse"] for r in range(runs)]),
+                "rsquared": sum([session[str(r)]["performance"]["testing"]["rsquared"] for r in range(runs)]),
+                "medae": sum([session[str(r)]["performance"]["testing"]["medae"] for r in range(runs)]),
+                "mae": sum([session[str(r)]["performance"]["testing"]["mae"] for r in range(runs)]),
+            },
+        }
+    }
+
+    session["best"] = min([(r, session[str(r)]["performance"]["training"]["rsquared"]) for r in range(runs)], key=lambda s: s[1])
+    session["averages"] = averages
+
     print(session)
     if save:
         now = datetime.now()
