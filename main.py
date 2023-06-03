@@ -91,9 +91,10 @@ def run(pop_size: int, max_len: int, generations: int, runs: int, tournament_siz
                 "medae": sum([session[str(r)]["performance"]["testing"]["medae"] for r in range(runs)]),
                 "mae": sum([session[str(r)]["performance"]["testing"]["mae"] for r in range(runs)]),
             },
-        }
+        },
+        "time": sum([session[str(r)]["time"] for r in range(runs)])
     }
-
+    session["time"] = sum([session[str(r)]["time"] for r in range(runs)])
     session["best"] = min([(r, session[str(r)]["performance"]["training"]["rsquared"]) for r in range(runs)], key=lambda s: s[1])
     session["averages"] = averages
 
